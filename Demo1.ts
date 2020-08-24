@@ -49,3 +49,24 @@ let countInference = 123;
 
 // typescript 重要宗旨：每个变量、每个对象的属性类型都应该是固定的，
 // 如果代码能够推断就让它推断，否则就需要进行注释；
+
+
+// --------------------------------函数的参数类型定义和返回值类型定义
+
+function getTotal(a: number, b: number): number {
+    return a + b;
+}
+const total = getTotal(1, 2);
+console.log('total', total);
+
+// 返回值类型： 常规类型、void、never
+
+// 参数类型定义，注意参数结构的情形
+function add({a, b}: {a: number, b: number}): number {
+    return a + b;
+}
+
+
+
+
+
