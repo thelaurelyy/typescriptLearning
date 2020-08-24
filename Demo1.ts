@@ -66,7 +66,36 @@ function add({a, b}: {a: number, b: number}): number {
     return a + b;
 }
 
+// ------------------------------数组类型的定义
 
+// 数组简单类型的定义
+const arr: (number | string)[] = [1, '2', 3];
 
+// 数组对象类型的定义：类型别名 type、类 class
+type Lady = {
+    name: string;
+    age: number;
+}
+const ladies: Lady[] = [
+    {
+        name: '韩梅梅',
+        age: 18
+    },
+    {
+        name: '王蕾',
+        age: 16
+    }
+];
 
+class Madam {
+    name: string;
+    age: number
+}
+const madams: Madam[] = [];
+
+interface Girl {
+    name: string;
+    age: number
+}
+const girls: Girl[] = [];
 
