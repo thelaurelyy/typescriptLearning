@@ -40,8 +40,12 @@ const grade: () => string = () => { return '满分'; }
 
 // -------------------------------类型注解和类型推断
 
+// type annotation 类型注解
+let count: number;
+count = 1;
 
+// type inference 类型推断
+let countInference = 123;
 
-
-
-
+// typescript 重要宗旨：每个变量、每个对象的属性类型都应该是固定的，
+// 如果代码能够推断就让它推断，否则就需要进行注释；
