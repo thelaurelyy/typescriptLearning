@@ -15,6 +15,7 @@
     - interface: 更倾向于继承
 
 [class 和 interface讲解](https://www.cnblogs.com/hlandzpy/p/13213656.html)
+
 [单例模式讲解](https://www.jianshu.com/p/6571e0c78e0d)
 
 ### 2、元组和数组的区别 ？
@@ -24,3 +25,5 @@
     
 ### 3、接口和类的约束: implements、接口间的继承: extends
 ![implements 和 extends](./继承与实现.png)
+
+### 4、为什么 类不能继承接口，类只能实现接口？
