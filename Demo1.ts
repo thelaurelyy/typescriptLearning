@@ -99,3 +99,117 @@ interface Girl {
 }
 const girls: Girl[] = [];
 
+// ------------------------------元祖的使用和类型约束
+// 元祖不常使用，在处理csv文件时可能会用到
+// 元祖用来固定数组中每个元素类型的位置
+
+
+// ------------------------------interface 接口
+
+interface Girl {
+    name : string;
+    age  : number;
+    weight : number;
+}
+const screenResume=( girl:Girl)=>{
+    girl.age<24 && girl.weight>=90 && console.log(girl.name+'进入面试')
+    girl.age>24 || girl.weight<90  && console.log(girl.name+'你被淘汰')
+}
+
+const getResume=( girl:Girl)=>{
+    console.log(girl.name+'年龄是：'+girl.age)
+    console.log(girl.name+'体重是：'+girl.weight)
+}
+const girl={
+    name:'大脚',
+    age:18,
+    weight:94
+}
+
+screenResume(girl)
+getResume(girl)
+
+// -------------------------------接口和类型别名的区别
+
+// 1、类型别名可以直接给出类型，但是接口必须代表对象
+type oneGirl = string;
+
+interface Girl {
+    name : string;
+    age  : number;
+    weight : number;
+    height ?: number;
+}
+
+// 2、接口中定义的属性值允许可选，关键字是'？'
+
+// 3、允许加入任意值
+// 4、接口中的方法
+interface Family {
+    father: string;
+    mother: string;
+    grandfather: string;
+    grandmother: string;
+    [propname: string]: any;
+    say(): string;
+}
+const family = {
+    father: 'King',
+    mother: 'queen',
+    grandfather: 'King',
+    grandmother: 'queen',
+    daughter: 'princess',
+    say() {
+        return 'We are family !~'
+    }
+}
+const getInfo = (family: Family) => {
+    console.log('father', family.father);
+    console.log('mother', family.mother);
+    console.log('daughter', family.daughter);
+}
+getInfo(family);
+
+// -------------------------------接口和类的约束: implements
+class normalFamily implements Family {
+    father = '大陆';
+    mother = '小花';
+    grandmother = '';
+    grandfather = ''
+    daughter = 'me';
+    say(): string {
+        return ''
+    }
+}
+// --------------------------------接口间的继承: extends
+interface Teacher extends Girl{
+    teach(): string;
+}
+const girlNew = {
+    name: '大脚',
+    age: 18,
+    weight: 96,
+    sex: '女',
+    say(){
+        return '好好学习！~'
+    },
+    teach() {
+        return '我是一个老师！'
+    }
+}
+const getResume2 = ( girl:Teacher) => {
+    console.log(girl.name+'年龄是：'+girl.age)
+}
+getResume2(girlNew)
+
+
+
+
+
+
+
+
+
+
+
+
