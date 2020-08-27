@@ -12,7 +12,8 @@
              而class经过编译之后在运行时依然存在。因此，如果要声明的类型只是纯粹的
              类型信息，只需要声明interface即可。
     - type: 更倾向于组合
-    - interface: 更倾向于继承
+    - interface: 更倾向于继承  
+                在面向对象的语言中，术语interface经常被用来定义一个不包含数据和逻辑代码但是用来签名定义了行为的抽象类型。
 
 [class 和 interface讲解](https://www.cnblogs.com/hlandzpy/p/13213656.html)
 
