@@ -208,8 +208,3 @@ getResume2(girlNew)
 
 
 
-
-
-
-
-
