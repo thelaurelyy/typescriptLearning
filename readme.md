@@ -153,14 +153,134 @@ class Octopus {
  - 不会为字符串成员生成反向映射
  - 外部枚举用来描述已经存在的枚举类型的形状。
 
+#### 7、类型推论和类型兼容性
 
+ - 比较两个对象：x要兼容y   =>    y是否能赋值给x     =>   y至少要有与x相同的属性 
+ 
+```typescript
+    interface Named {
+        name: string;
+    }
+    
+    let x: Named;
+    // y's inferred type is { name: string; location: string; }
+    let y = { name: 'Alice', location: 'Seattle' };
+    x = y;
+```
 
+ - 比较两个函数：y要兼容x    =>   x要赋值给y    =>    x的每个参数必须能在y里找到对应类型的参数
+ 
+ ```typescript
+    let x = (a: number) => 0;
+    let y = (b: number, s: string) => 0;
+    
+    y = x; // OK
+    x = y; // Error
+```
 
+ - 类型系统强制源函数的返回值类型必须是目标函数返回值类型的子类型。
 
+```typescript
+    let x = () => ({name: 'Alice'});
+    let y = () => ({name: 'Alice', location: 'Seattle'});
+    
+    x = y; // OK
+    y = x; // Error, because x() lacks a location property
+```
 
+ - 函数参数双向协变
+ - 类的私有成员和受保护成员会影响兼容性。当检查类实例的兼容时，如果目标类型包含一个私有成员，那么源类型必须包含来自同一个类的这个私有成员。 
+   同样地，这条规则也适用于包含受保护成员实例的类型检查。 这允许子类赋值给父类，但是不能赋值给其它有同样类型的类。
+   
+#### 8、高级类型
+   
+ - 交叉类型（intersection types）:多个类型合并为一个类型，这个类型的对象同时拥有了这三种类型的成员  eg. Person & Loggable & Serializable
+ - 联合类型（union types）:一个值可以是几种类型之一                 eg. number | string | boolean
+ - 类型保护和区分类型（type Guards and Differentiating Types)
+    
+```typescript
+    // 类型谓词
+    function isFish(pet: Fish | Bird): pet is Fish {
+        return (<Fish>pet).swim !== undefined;
+    }
 
+    // 'swim' 和 'fly' 调用都没有问题了    
+    if (isFish(pet)) {
+        pet.swim();
+    }
+    else {
+        pet.fly();
+    }
+```
 
+ - typeof / instanceof
 
+ - 按照JavaScript语义，typescript会把null和undefined区别对待。string|null 和 string|undefined，和 string|undefined|null 是不同的类型。
+ 
+ - 使用类型断言手动去除 null  或  undefined ，语法是添加 !后缀；       
+```typescript
+    function broken(name: string | null): string {
+      function postfix(epithet: string) {
+        return name.charAt(0) + '.  the ' + epithet; // error, 'name' is possibly null
+      }
+      name = name || "Bob";
+      return postfix("great");
+    }
+    
+    function fixed(name: string | null): string {
+      function postfix(epithet: string) {
+        return name!.charAt(0) + '.  the ' + epithet; // ok
+      }
+      name = name || "Bob";
+      return postfix("great");
+    }
+```
 
+ - 可辨识联合（Discriminated Unions）
+ - 完整性检查
+ - 多态的this类型
+ - 索引类型（Index Types）：
+    - 索引类型查询操作符（对于任何类型 T， keyof T的结果为 T上已知的公共属性名的联合。）
+    - 索引访问操作符（ 在这里，类型语法反映了表达式语法。 这意味着 person['name']具有类型 Person['name'] — 在我们的例子里则为 string类型。 然而，就像索引类型查询一样，你可以在普通的上下文里使用 T[K]，这正是它的强大所在。 你只要确保类型变量 K extends keyof T就可以了。）
+    
+```typescript
+    function pluck<T, K extends keyof T>(o: T, names: K[]): T[K][] {
+      return names.map(n => o[n]);
+    }
+    
+    interface Person {
+        name: string;
+        age: number;
+    }
+    let person: Person = {
+        name: 'Jarid',
+        age: 35
+    };
+    let strings: string[] = pluck(person, ['name']); // ok, string[]
+```
+
+#### 8、模块
+
+"内部模块"现在称做"命名空间"，"外部模块"现在则简称为"模块"。
+也就是说 moduleX {} 相当于现在推荐的写法 namespace {}
+
+如果需要对导出的部分重命名，则可以使用：
+```typescript
+    export { ZipCodeValidator as mainValidator };
+```
+
+可以对导入内容重命名
+```typescript
+    import { ZipCodeValidator as ZCV } from "./ZipCodeValidator";
+    let myValidator = new ZCV();
+```
+
+可以将整个模块导入到一个变量，并通过它来访问模块的导出部分
+```typescript
+    import * as validator from "./ZipCodeValidator";
+    let myValidator = new validator.ZipCodeValidator();
+```
+
+注意：每个模块都可以有一个default 导出。并且一个模块只能够有一个default导出。
 
 
